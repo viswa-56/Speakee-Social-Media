@@ -15,6 +15,7 @@ const MessageContainer = ({selectedchat,setChats}) => {
 
     useEffect(()=>{
         socket.on('newMessage',(message)=>{
+            console.log("message"+message)
             if(selectedchat._id === message.chatId){
                 setMessages((prev)=>[...prev,message])
             }
@@ -61,6 +62,7 @@ const MessageContainer = ({selectedchat,setChats}) => {
         }
     },[messages])
 
+    // console.log('messages'+messages)
     return (
     <div>
       {

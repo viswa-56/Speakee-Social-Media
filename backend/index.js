@@ -5,6 +5,7 @@ import userroutes from "./routes/userroutes.js"
 import authroutes from "./routes/authroutes.js"
 import postroutes from "./routes/postroutes.js"
 import messageroutes from "./routes/messageroutes.js"
+import storyroutes from "./routes/storyroutes.js"
 import cloudinary from "cloudinary";
 import cookieParser from "cookie-parser";
 import { app,server } from "./socket/socket.js";
@@ -37,6 +38,7 @@ app.use("/api/user",userroutes);
 app.use("/api/post",postroutes);
 app.use("/api/auth",authroutes);
 app.use("/api/messages",messageroutes);
+app.use("/api/story",storyroutes);
 
 // const __dirname = path.resolve()
 

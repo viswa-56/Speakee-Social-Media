@@ -8,6 +8,7 @@ const Chat = ({ chat, setselectedchat, isOnline }) => {
 
   if (chat) user = chat.users[0];
 
+  // console.log(chat)
   return (
     <div>
       {user && (
