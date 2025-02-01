@@ -20,7 +20,7 @@ export const sendMessage = Trycatch(async(req,res)=>{
             users :[senderId,recieverId],
             latestMessage:{
                 text:message,
-                sender:senderId
+                sender:senderId,
             },
         })
 
@@ -30,7 +30,9 @@ export const sendMessage = Trycatch(async(req,res)=>{
     const newMessage = new Messages({
         chatId : chat._id,
         sender:senderId,
-        text:message
+        text:message,
+        senderName:req.user.name,
+        chatType:"Chat"
     })
 
     await newMessage.save()

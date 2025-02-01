@@ -1,32 +1,49 @@
-import {  createContext, useContext, useEffect, useState } from "react";
-import io from 'socket.io-client'
+// socketContext.jsx
+import { createContext, useContext, useEffect, useState } from "react";
+import io from 'socket.io-client';
 import { UserData } from "./userContext";
 
-const SocketContext = createContext()
-const EndPoint = "http://localhost:7000"
+const SocketContext = createContext();
+const EndPoint = "http://localhost:7000";
 
-export const SocketContextProvider = ({children})=>{
-    
-    const [socket,setSocket]= useState(null)
-    const [onlineUsers,setOnlineUsers] = useState([])
-    const {user} = UserData()
-    useEffect(()=>{
-        const socket = io(EndPoint,{
-            query:{
-                userId : user?._id
-            }
-        }
-        )
-        setSocket(socket)
+export const SocketContextProvider = ({ children }) => {
+  const [socket, setSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const { user } = UserData();
 
-        socket.on('getOnlineUser',(users)=>{
-            setOnlineUsers(users)
-        })
+  useEffect(() => {
+    if (!user?._id) return;
 
-        return ()=> socket && socket.close()
-    },[user?._id])
+    const newSocket = io(EndPoint, {
+      query: { userId: user._id },
+    });
 
-    return <SocketContext.Provider value={{socket,onlineUsers}}>{children}</SocketContext.Provider>
-}
+    newSocket.on('connect', () => {
+      console.log('Socket connected');
+    });
 
-export const SocketData = () => useContext(SocketContext)
+    newSocket.on('getOnlineUser', (users) => {
+      setOnlineUsers(users);
+    });
+
+    newSocket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+    });
+
+    setSocket(newSocket);
+
+    return () => {
+      if (newSocket) {
+        newSocket.close();
+      }
+    };
+  }, [user?._id]);
+
+  return (
+    <SocketContext.Provider value={{ socket, onlineUsers }}>
+      {children}
+    </SocketContext.Provider>
+  );
+};
+
+export const SocketData = () => useContext(SocketContext);

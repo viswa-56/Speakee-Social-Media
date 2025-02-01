@@ -8,6 +8,7 @@ import {PostContextProvider} from "./context/postContext.jsx"
 import {ChatContextProvider} from "./context/chatContext.jsx"
 import { SocketContextProvider } from './context/socketContext.jsx'
 import {StoryContextProvider} from "./context/storyContext.jsx"
+import { GroupchatContextProvider } from './context/groupchatContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -15,9 +16,11 @@ createRoot(document.getElementById('root')).render(
       <PostContextProvider>
        <StoryContextProvider>
         <ChatContextProvider>
-          <SocketContextProvider>
-            <App /> 
-          </SocketContextProvider>
+          <GroupchatContextProvider>
+            <SocketContextProvider>
+              <App /> 
+            </SocketContextProvider>
+          </GroupchatContextProvider>
         </ChatContextProvider>
        </StoryContextProvider>
     </PostContextProvider>

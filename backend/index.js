@@ -6,6 +6,7 @@ import authroutes from "./routes/authroutes.js"
 import postroutes from "./routes/postroutes.js"
 import messageroutes from "./routes/messageroutes.js"
 import storyroutes from "./routes/storyroutes.js"
+import grouproutes from "./routes/grouproutes.js"
 import cloudinary from "cloudinary";
 import cookieParser from "cookie-parser";
 import { app,server } from "./socket/socket.js";
@@ -39,6 +40,7 @@ app.use("/api/post",postroutes);
 app.use("/api/auth",authroutes);
 app.use("/api/messages",messageroutes);
 app.use("/api/story",storyroutes);
+app.use("/api/group",grouproutes);
 
 // const __dirname = path.resolve()
 
