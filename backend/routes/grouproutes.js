@@ -1,10 +1,11 @@
 import express from "express"
 import { isAuth } from "../middleware/isauth.js"
 import { createGroup, sendGroupMessage, getGroupMessages,getUserGroups,addMemberToGroup,removeMemberFromGroup ,exitGroup,addAdminToGroup,getAllGroupMembers} from "../controllers/groupController.js"
+import uploadFile from "../middleware/multer.js"
 
 const router = express.Router()
 
-router.post("/new",isAuth,createGroup)
+router.post("/new",isAuth,uploadFile,createGroup)
 router.post("/sendmsg",isAuth,sendGroupMessage)
 router.get("/allgroups",isAuth,getUserGroups)
 router.post("/addmember", isAuth, addMemberToGroup);

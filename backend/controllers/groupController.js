@@ -3,25 +3,57 @@ import { Messages } from "../models/messagemodel.js";
 import { getGroupMembersSocketIds, io ,getReceiverSocketId} from "../socket/socket.js";
 import { Trycatch } from "../utils/trycatch.js";
 import mongoose from 'mongoose';
+import getDatauri from "../utils/urigenerator.js";
+import cloudinary from "cloudinary"
 
 export const createGroup = Trycatch(async (req, res) => {
-  const { name, members } = req.body;
+  const { name } = req.body;
   const admin = req.user._id;
+  const file  = req.file;
+
+  let members;
+  try {
+    members = JSON.parse(req.body.members);
+  } catch (error) {
+    return res.status(400).json("Invalid members format.");
+  }
+
   if (!name || !members || members.length === 0) {
     return res.status(400).json("Group name and members are required.");
   }
+  
+  if (!members.includes(admin.toString())) {
+    members.push(admin.toString());
+  }
 
+  const fileurl = getDatauri(file);
+  const mycloud = await cloudinary.v2.uploader.upload(fileurl.content)
   // Convert string representations of ObjectIds to actual ObjectId instances
   const memberIds = members.map(member => new mongoose.Types.ObjectId(member)); // No 'new' needed here
 
   const group = new GroupChat({
     name,
     members: memberIds,
-    // latestMessage: null,
-    admins:admin
+    latestMessage: null,
+    admins:admin,
+    profilePic:{
+      id:mycloud.public_id,
+      url:mycloud.secure_url,
+  }
   });
 
   await group.save();
+
+  const defaultMessage = {
+    sender: admin,
+    text: `${name} group is created.`,
+  };
+
+  // Update the latest message field with the default message
+  group.latestMessage = defaultMessage;
+
+  await group.save();
+
   memberIds.forEach((memberId) => {
     io.to(getReceiverSocketId(memberId)).emit("joinGroup", group._id);
   });

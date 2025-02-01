@@ -225,7 +225,7 @@ const MessageContainer = ({ selectedchat, setChats, isGroup }) => {
         ) : (
           <>
             <img
-              src="https://tse4.mm.bing.net/th?id=OIP.mlfx4V9QaUTi21obJvQ4YAAAAA&pid=Api&P=0&h=180"
+              src={`${selectedchat.profilePic ? selectedchat.profilePic.url : "https://tse4.mm.bing.net/th?id=OIP.mlfx4V9QaUTi21obJvQ4YAAAAA&pid=Api&P=0&h=180"}`}
               className="w-8 h-8 rounded-full"
               alt="Group avatar"
             />

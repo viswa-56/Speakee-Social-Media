@@ -9,7 +9,11 @@ const GroupSchema = new mongoose.Schema({
         sender: {
             type: mongoose.Schema.Types.ObjectId, ref: "User"
         }
-    }
+    },
+    profilePic: {
+        id: String,
+        url: String,
+      },
     },
     {
         timestamps: true

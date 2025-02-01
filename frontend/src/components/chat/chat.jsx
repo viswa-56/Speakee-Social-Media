@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import { UserData } from "../../context/userContext";
 import { BsSendCheck } from "react-icons/bs";
 
-const Chat = ({ chat, setselectedchat, isOnline ,setselectedGroup ,isGroup}) => {
+const Chat = ({chat,setselectedchat,isOnline,setselectedGroup,isGroup}) => {
   const { user: loggedInUser } = UserData();
   let user;
   // let group;
@@ -23,7 +23,7 @@ const Chat = ({ chat, setselectedchat, isOnline ,setselectedGroup ,isGroup}) => 
               setselectedGroup(chat);
               setselectedchat(null);
             }
-          }}          
+          }}
           style={{ minHeight: "70px", maxWidth: "100%" }}
         >
           {/* Top Section */}
@@ -34,16 +34,32 @@ const Chat = ({ chat, setselectedchat, isOnline ,setselectedGroup ,isGroup}) => 
                 title="Online"
               ></div>
             )}
-            {!isGroup?<><img
-              src={user.profilePic.url}
-              alt=""
-              className="w-10 h-10 rounded-full object-cover"
-            /><span className="truncate font-semibold text-gray-700 flex-grow">
-            {user.name}
-          </span></>:<><img src="https://tse4.mm.bing.net/th?id=OIP.mlfx4V9QaUTi21obJvQ4YAAAAA&pid=Api&P=0&h=180" className="w-10 h-10 rounded-full object-cover"/>
-            <span className="truncate font-semibold text-gray-700 flex-grow">
-              {chat.name}
-            </span></>}
+            {!isGroup ? (
+              <>
+                <img
+                  src={user.profilePic.url}
+                  alt=""
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <span className="truncate font-semibold text-gray-700 flex-grow">
+                  {user.name}
+                </span>
+              </>
+            ) : (
+              <>
+                <img
+                  src={`${
+                    chat.profilePic
+                      ? chat.profilePic.url
+                      : "https://tse4.mm.bing.net/th?id=OIP.mlfx4V9QaUTi21obJvQ4YAAAAA&pid=Api&P=0&h=180"
+                  }`}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <span className="truncate font-semibold text-gray-700 flex-grow">
+                  {chat.name}
+                </span>
+              </>
+            )}
           </div>
 
           {/* Bottom Section */}
